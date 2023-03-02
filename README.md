@@ -1,6 +1,12 @@
 # React Crypto Market
 
-## Deploy: -
+---
+
+## Deploy:
+
+https://redh3ad.github.io/crypto-market/
+
+---
 
 ### Technoligies:
 
@@ -8,3 +14,5 @@
 - Typescript
 - React Router v6
 - styled-components / sass
+
+---

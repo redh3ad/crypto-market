@@ -4,9 +4,9 @@ import Header from '../components/Header';
 
 const MainLayout: React.FC = () => {
   return (
-    <div className='wrapper'>
+    <div className='app'>
       <Header />
-      <div className='content'>
+      <div className='app-content'>
         <Outlet />
       </div>
     </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Title = styled.h1`
@@ -126,7 +127,9 @@ const TempCryptoInfo = [
 const Header: React.FC = () => {
   return (
     <div className='app-header'>
-      <Title>Crypto Market</Title>
+      <Link to='/'>
+        <Title>Crypto Market</Title>
+      </Link>
       <CryptoPopularContainer>
         {TempCryptoInfo.map((coin) => (
           <CryptoBlock key={coin.id}>

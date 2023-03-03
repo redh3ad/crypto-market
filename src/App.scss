@@ -32,11 +32,11 @@ a {
 
   &-content {
     padding: 40px 55px;
-    min-height: calc(100vh - 195px);
+    min-height: calc(100vh - 200px);
     margin-bottom: 10px;
     @media (max-width: 800px) {
+      min-height: calc(100vh - 178px);
       padding: 10px 25px;
-      min-height: calc(100vh - 172px);
     }
     @media (max-width: 600px) {
       padding: 0px 2px;

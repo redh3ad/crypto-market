@@ -1,7 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
+import crypto from './cryptoSlice';
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    crypto,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

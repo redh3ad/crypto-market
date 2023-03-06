@@ -45,7 +45,7 @@ const TableItem = styled.p`
   }
   :nth-child(4) {
     flex: 3;
-    @media (max-width: 720px) {
+    @media (max-width: 1150px) {
       display: none;
     }
   }
@@ -56,9 +56,7 @@ const TableItem = styled.p`
   }
   :nth-child(6) {
     flex: 3;
-    @media (max-width: 1150px) {
-      display: none;
-    }
+    margin-right: 9px;
   }
   :nth-child(7) {
     @media (max-width: 850px) {
@@ -66,8 +64,11 @@ const TableItem = styled.p`
     }
   }
   :nth-child(8) {
-    @media (max-width: 375px) {
-      font-size: 8px;
+    @media (max-width: 625px) {
+      font-size: 10px;
+    }
+    @media (max-width: 365px) {
+      display: none;
     }
   }
 `;
@@ -83,7 +84,7 @@ const tableTitleContent = [
   'Price',
   'MarketCap',
   'VWAP(24Hr)',
-  'Supply',
+  'Buy',
   'Volume(24Hr)',
   'Change(24Hr)',
 ];

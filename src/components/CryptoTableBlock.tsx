@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { TCryptoInfo } from '../types/types';
 
@@ -11,7 +11,6 @@ const CryptoBlock = styled.div`
       padding: 10px 5px;
       background-color: ${color};
       transition: all 0.3s ease;
-      cursor: pointer;
       :hover {
         z-index: 3;
         -webkit-box-shadow: 0px 0px 10px 3px rgba(34, 60, 80, 0.16);
@@ -39,6 +38,12 @@ const CryptoDescBlock = styled.div`
   justify-content: flex-start;
   align-items: center;
   flex: 6;
+  cursor: pointer;
+  :hover {
+    p {
+      text-decoration: underline;
+    }
+  }
 `;
 
 const CryptoImg = styled.img`
@@ -83,7 +88,7 @@ const CryptoParams = styled.p`
   }
   :nth-child(4) {
     flex: 3;
-    @media (max-width: 720px) {
+    @media (max-width: 1150px) {
       display: none;
     }
   }
@@ -94,9 +99,6 @@ const CryptoParams = styled.p`
   }
   :nth-child(6) {
     flex: 3;
-    @media (max-width: 1150px) {
-      display: none;
-    }
   }
   :nth-child(7) {
     @media (max-width: 850px) {
@@ -117,16 +119,35 @@ const CryptoChange = styled.p`
       @media (max-width: 375px) {
         font-size: 10px;
       }
+      @media (max-width: 365px) {
+        display: none;
+      }
     `;
   }}
 `;
 
+const CryptoAddButton = styled.span`
+  padding: 5px;
+  border-radius: 10px;
+  font-size: 30px;
+  color: #2702ff;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  @media (max-width: 460px) {
+    font-size: 25px;
+  }
+  :hover {
+    color: white;
+    background-color: #2702ff;
+  }
+`;
+
 const CryptoTableBlock: React.FC<TCryptoInfo> = ({
+  id,
   rank,
   symbol,
   name,
   priceUsd,
-  supply,
   volumeUsd24Hr,
   marketCapUsd,
   changePercent24Hr,
@@ -163,7 +184,12 @@ const CryptoTableBlock: React.FC<TCryptoInfo> = ({
       <CryptoParams>{`$${Number(priceUsd).toFixed(2)}`}</CryptoParams>
       <CryptoParams>{MarketCapValue(marketCapUsd)}</CryptoParams>
       <CryptoParams>{`$${Number(vwap24Hr).toFixed(2)}`}</CryptoParams>
-      <CryptoParams>{MarketCapValue(supply)}</CryptoParams>
+      <CryptoParams>
+        <CryptoAddButton className='material-symbols-outlined'>
+          add_card
+        </CryptoAddButton>
+      </CryptoParams>
+
       <CryptoParams>{MarketCapValue(volumeUsd24Hr)}</CryptoParams>
       <CryptoChange color={Number(changePercent24Hr) > 0 ? 'green' : 'red'}>
         {Number(changePercent24Hr).toFixed(2)}%

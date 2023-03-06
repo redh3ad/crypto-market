@@ -14,5 +14,6 @@ https://redh3ad.github.io/crypto-market/
 - Typescript
 - React Router v6
 - styled-components / sass
+- redux-toolkit
 
 ---

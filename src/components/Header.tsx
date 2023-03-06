@@ -75,6 +75,12 @@ const CryptoPrice = styled.p`
 `;
 
 const PortfolioIcon = styled.span`
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   display: block;
   margin-left: 15px;
   padding: 5px;

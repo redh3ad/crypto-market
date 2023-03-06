@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
+import { addPortfolio } from '../redux/cryptoSlice';
+import { useAppDispatch } from '../redux/hooks';
 import { TCryptoInfo } from '../types/types';
 
 const CryptoBlock = styled.div`
@@ -153,12 +155,33 @@ const CryptoTableBlock: React.FC<TCryptoInfo> = ({
   rank,
   symbol,
   name,
-  priceUsd,
-  volumeUsd24Hr,
+  supply,
+  maxSupply,
   marketCapUsd,
+  volumeUsd24Hr,
+  priceUsd,
   changePercent24Hr,
   vwap24Hr,
 }) => {
+  const dispatch = useAppDispatch();
+
+  const addCryptoInPortfolio = () => {
+    const cryptoInfo = {
+      id,
+      rank,
+      symbol,
+      name,
+      supply,
+      maxSupply,
+      marketCapUsd,
+      volumeUsd24Hr,
+      priceUsd,
+      changePercent24Hr,
+      vwap24Hr,
+    };
+    dispatch(addPortfolio(cryptoInfo));
+  };
+
   const MarketCapValue = (marketCap: string) => {
     const num = Number(marketCap);
     if (num > 1000000000) {
@@ -191,7 +214,9 @@ const CryptoTableBlock: React.FC<TCryptoInfo> = ({
       <CryptoParams>{MarketCapValue(marketCapUsd)}</CryptoParams>
       <CryptoParams>{`$${Number(vwap24Hr).toFixed(2)}`}</CryptoParams>
       <CryptoParams>
-        <CryptoAddButton className='material-symbols-outlined'>
+        <CryptoAddButton
+          onClick={addCryptoInPortfolio}
+          className='material-symbols-outlined'>
           add_card
         </CryptoAddButton>
       </CryptoParams>

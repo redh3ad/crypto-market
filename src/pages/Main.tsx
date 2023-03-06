@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import CryptoTableBlock from '../components/CryptoTableBlock';
+import { fetchAllCryptos } from '../redux/cryptoSlice';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { TCryptoInfo } from '../types/types';
+import NotFound from './NotFound';
 
 const Title = styled.h1`
   font-size: 33px;
@@ -418,6 +421,22 @@ const TempCryptoInfo: TCryptoInfo[] = [
 ];
 
 const Main: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const allCryptos = useAppSelector((state) => state.cryptos.cryptos);
+  const error = useAppSelector((state) => state.cryptos.error);
+
+  const getAllCryptos = async () => {
+    await dispatch(fetchAllCryptos());
+  };
+
+  useEffect(() => {
+    getAllCryptos();
+  }, []);
+
+  if (error) {
+    return <NotFound />;
+  }
+
   return (
     <div className='app-main'>
       <Title>Market trends</Title>
@@ -427,7 +446,7 @@ const Main: React.FC = () => {
         ))}
       </TableTitleBlock>
       <TableItemsBlock>
-        {TempCryptoInfo.map((crypto) => (
+        {allCryptos.map((crypto) => (
           <CryptoTableBlock key={crypto.id} {...crypto} />
         ))}
       </TableItemsBlock>

@@ -7,7 +7,7 @@ interface ICryptoState {
   portfolio: TCryptoInfo[];
   modalStatus: boolean;
   loading: boolean;
-  error: string | null;
+  error: string | unknown;
 }
 
 const initialState: ICryptoState = {
@@ -24,11 +24,17 @@ export const fetchAllCryptos = createAsyncThunk<
   { rejectValue: string }
 >('cryptos/fetchAllCryptos', async (_, { rejectWithValue }) => {
   try {
-    const { data } = await axios.get<{ data: TCryptoInfo[] }>(
+    const { data, status } = await axios.get<{ data: TCryptoInfo[] }>(
       'https://api.coincap.io/v2/assets',
+      {
+        params: {
+          Authorization: 'Bearer 25e5456a-9800-4152-8992-1bad20319f06',
+          limit: 20,
+          offset: 0,
+        },
+      },
     );
-    if (data.data) {
-      console.log(data.data);
+    if (status === 200) {
       return data.data;
     } else {
       throw new Error('error');
@@ -51,17 +57,20 @@ export const cryptoSlice = createSlice({
     builder.addCase(
       fetchAllCryptos.fulfilled,
       (state, action: PayloadAction<TCryptoInfo[]>) => {
+        state.error = null;
         state.loading = false;
         state.cryptos = action.payload;
       },
     );
     builder.addCase(fetchAllCryptos.pending, (state) => {
+      state.error = null;
       state.loading = true;
     });
     builder.addCase(
       fetchAllCryptos.rejected,
       (state, action: PayloadAction<string | unknown>) => {
         state.loading = false;
+        state.error = action.payload;
       },
     );
   },

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { fetchAllCryptos } from '../redux/cryptoSlice';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 
 const Title = styled.h1`
   color: #2702ff;
@@ -75,6 +77,7 @@ const CryptoPrice = styled.p`
 `;
 
 const PortfolioIcon = styled.span`
+  position: relative;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -93,6 +96,9 @@ const PortfolioIcon = styled.span`
     color: white;
     background-color: #2702ff;
   }
+  :active {
+    transform: translateY(1px);
+  }
   @media (max-width: 800px) {
     font-size: 35px;
     margin-left: 10px;
@@ -103,44 +109,53 @@ const PortfolioIcon = styled.span`
   }
 `;
 
-const TempCryptoInfo = [
-  {
-    id: 'bitcoin',
-    symbol: 'BTC',
-    rank: '1',
-    name: 'Bitcoin',
-    priceUsd: '6929.8217756835584756',
-    iconUrl: 'https://assets.coincap.io/assets/icons/btc@2x.png',
-  },
-  {
-    id: 'ethereum',
-    rank: '2',
-    symbol: 'ETH',
-    name: 'Ethereum',
-    priceUsd: '404.9774667045200896',
-    iconUrl: 'https://assets.coincap.io/assets/icons/eth@2x.png',
-  },
-  {
-    id: 'tether',
-    rank: '3',
-    symbol: 'USDT',
-    name: 'Tether',
-    priceUsd: '1.0009115584940656',
-    iconUrl: 'https://assets.coincap.io/assets/icons/usdt@2x.png',
-  },
-];
+const PortfolioNum = styled.span`
+  top: -5px;
+  right: -5px;
+  padding-top: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 15px;
+  color: white;
+  background-color: #2702ff;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  @media (max-width: 768px) {
+    font-size: 13px;
+    width: 18px;
+    height: 18px;
+  }
+`;
 
 const Header: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const itemsInPortfolio = useAppSelector((state) => state.cryptos.portfolio);
+  const allCryptos = useAppSelector((state) => state.cryptos.cryptos);
+
+  const getAllCryptos = async () => {
+    await dispatch(fetchAllCryptos());
+  };
+
+  useEffect(() => {
+    getAllCryptos();
+  }, []);
+
   return (
     <div className='app-header'>
       <Link to='/'>
         <Title>Crypto Market</Title>
       </Link>
       <CryptoPopularContainer>
-        {TempCryptoInfo.map((coin) => (
+        {allCryptos.slice(0, 3).map((coin) => (
           <CryptoBlock key={coin.id}>
             <CryptoBlockDesc>
-              <CryptoImg src={coin.iconUrl} alt={`coin ${coin.name}`} />
+              <CryptoImg
+                src={`https://assets.coincap.io/assets/icons/${coin.symbol.toLowerCase()}@2x.png`}
+                alt={`coin ${coin.name}`}
+              />
               <CryptoTitle>{coin.name}</CryptoTitle>
             </CryptoBlockDesc>
             <CryptoPrice>{`$${Number(coin.priceUsd).toFixed(2)}`}</CryptoPrice>
@@ -148,6 +163,11 @@ const Header: React.FC = () => {
         ))}
       </CryptoPopularContainer>
       <PortfolioIcon className='material-symbols-outlined'>
+        {itemsInPortfolio.length ? (
+          <PortfolioNum>{itemsInPortfolio.length}</PortfolioNum>
+        ) : (
+          ''
+        )}
         business_center
       </PortfolioIcon>
     </div>

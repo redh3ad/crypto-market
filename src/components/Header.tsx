@@ -139,10 +139,6 @@ const Header: React.FC = () => {
     await dispatch(fetchTopThreeCryptos());
   };
 
-  const getCoinImage = (name: string) => {
-    `https://assets.coincap.io/assets/icons/${coin.symbol.toLowerCase()}@2x.png`;
-  };
-
   useEffect(() => {
     getAllCryptos();
   }, []);
@@ -157,7 +153,7 @@ const Header: React.FC = () => {
           <CryptoBlock key={coin.id}>
             <CryptoBlockDesc>
               <CryptoImg
-                src={getCoinImage(coin.symbol.toLowerCase())}
+                src={`https://assets.coincap.io/assets/icons/${coin.symbol.toLowerCase()}@2x.png`}
                 alt={`coin ${coin.name}`}
               />
               <CryptoTitle>{coin.name}</CryptoTitle>

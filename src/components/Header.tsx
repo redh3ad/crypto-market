@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { fetchAllCryptos } from '../redux/cryptoSlice';
+import { fetchTopThreeCryptos } from '../redux/cryptoSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 
 const Title = styled.h1`
@@ -133,10 +133,14 @@ const PortfolioNum = styled.span`
 const Header: React.FC = () => {
   const dispatch = useAppDispatch();
   const itemsInPortfolio = useAppSelector((state) => state.cryptos.portfolio);
-  const allCryptos = useAppSelector((state) => state.cryptos.cryptos);
+  const topThreeCryptos = useAppSelector((state) => state.cryptos.topThree);
 
   const getAllCryptos = async () => {
-    await dispatch(fetchAllCryptos());
+    await dispatch(fetchTopThreeCryptos());
+  };
+
+  const getCoinImage = (name: string) => {
+    `https://assets.coincap.io/assets/icons/${coin.symbol.toLowerCase()}@2x.png`;
   };
 
   useEffect(() => {
@@ -149,11 +153,11 @@ const Header: React.FC = () => {
         <Title>Crypto Market</Title>
       </Link>
       <CryptoPopularContainer>
-        {allCryptos.slice(0, 3).map((coin) => (
+        {topThreeCryptos.map((coin) => (
           <CryptoBlock key={coin.id}>
             <CryptoBlockDesc>
               <CryptoImg
-                src={`https://assets.coincap.io/assets/icons/${coin.symbol.toLowerCase()}@2x.png`}
+                src={getCoinImage(coin.symbol.toLowerCase())}
                 alt={`coin ${coin.name}`}
               />
               <CryptoTitle>{coin.name}</CryptoTitle>

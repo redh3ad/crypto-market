@@ -5,6 +5,7 @@ import { TCryptoInfo } from '../types/types';
 interface ICryptoState {
   cryptos: TCryptoInfo[];
   portfolio: TCryptoInfo[];
+  topThree: TCryptoInfo[];
   modalStatus: boolean;
   loading: boolean;
   error: string | unknown;
@@ -13,6 +14,7 @@ interface ICryptoState {
 const initialState: ICryptoState = {
   cryptos: [],
   portfolio: [],
+  topThree: [],
   modalStatus: false,
   loading: false,
   error: null,
@@ -20,9 +22,9 @@ const initialState: ICryptoState = {
 
 export const fetchAllCryptos = createAsyncThunk<
   TCryptoInfo[],
-  undefined,
+  number,
   { rejectValue: string }
->('cryptos/fetchAllCryptos', async (_, { rejectWithValue }) => {
+>('cryptos/fetchAllCryptos', async (page = 0, { rejectWithValue }) => {
   try {
     const { data, status } = await axios.get<{ data: TCryptoInfo[] }>(
       'https://api.coincap.io/v2/assets',
@@ -30,6 +32,33 @@ export const fetchAllCryptos = createAsyncThunk<
         params: {
           Authorization: 'Bearer 25e5456a-9800-4152-8992-1bad20319f06',
           limit: 20,
+          offset: page * 20,
+        },
+      },
+    );
+    if (status === 200) {
+      return data.data;
+    } else {
+      throw new Error('error');
+    }
+  } catch (error) {
+    const err = error as AxiosError;
+    return rejectWithValue(err.message);
+  }
+});
+
+export const fetchTopThreeCryptos = createAsyncThunk<
+  TCryptoInfo[],
+  undefined,
+  { rejectValue: string }
+>('cryptos/fetchTopThreeCryptos', async (_, { rejectWithValue }) => {
+  try {
+    const { data, status } = await axios.get<{ data: TCryptoInfo[] }>(
+      'https://api.coincap.io/v2/assets',
+      {
+        params: {
+          Authorization: 'Bearer 25e5456a-9800-4152-8992-1bad20319f06',
+          limit: 3,
           offset: 0,
         },
       },
@@ -71,6 +100,12 @@ export const cryptoSlice = createSlice({
       (state, action: PayloadAction<string | unknown>) => {
         state.loading = false;
         state.error = action.payload;
+      },
+    );
+    builder.addCase(
+      fetchTopThreeCryptos.fulfilled,
+      (state, action: PayloadAction<TCryptoInfo[]>) => {
+        state.topThree = action.payload;
       },
     );
   },

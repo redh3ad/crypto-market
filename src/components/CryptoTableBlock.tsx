@@ -4,6 +4,7 @@ import { addPortfolio } from '../redux/cryptoSlice';
 import { useAppDispatch } from '../redux/hooks';
 import { TCryptoInfo } from '../types/types';
 import defaultImage from '../assets/logo_mark.png';
+import { Link } from 'react-router-dom';
 
 const CryptoBlock = styled.div`
   ${({ color }) => {
@@ -40,7 +41,6 @@ const CryptoDescBlock = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  flex: 6;
   cursor: pointer;
   :hover {
     p {
@@ -201,19 +201,21 @@ const CryptoTableBlock: React.FC<TCryptoInfo> = ({
   return (
     <CryptoBlock color={Number(rank) % 2 ? 'white' : '#f8f8f8'}>
       <CryptoRank>{rank}</CryptoRank>
-      <CryptoDescBlock>
-        <CryptoImg
-          src={
-            `https://assets.coincap.io/assets/icons/${symbol.toLowerCase()}@2x.png` ||
-            defaultImage
-          }
-        />
-        <div>
-          <CryptoName>{name}</CryptoName>
+      <Link to={`/assets/${id}`} style={{ flex: 6, textDecoration: 'none' }}>
+        <CryptoDescBlock>
+          <CryptoImg
+            src={
+              `https://assets.coincap.io/assets/icons/${symbol.toLowerCase()}@2x.png` ||
+              defaultImage
+            }
+          />
+          <div>
+            <CryptoName>{name}</CryptoName>
+            <CryptoSymbol>{symbol}</CryptoSymbol>
+          </div>
+        </CryptoDescBlock>
+      </Link>
 
-          <CryptoSymbol>{symbol}</CryptoSymbol>
-        </div>
-      </CryptoDescBlock>
       <CryptoParams>{`$${Number(priceUsd).toFixed(2)}`}</CryptoParams>
       <CryptoParams>{MarketCapValue(marketCapUsd)}</CryptoParams>
       <CryptoParams>{`$${Number(vwap24Hr).toFixed(2)}`}</CryptoParams>

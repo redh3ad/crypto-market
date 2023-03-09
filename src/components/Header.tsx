@@ -58,6 +58,9 @@ const CryptoBlockDesc = styled.div`
 
 const CryptoTitle = styled.h5`
   font-size: 15px;
+  :hover {
+    text-decoration: underline;
+  }
   @media (max-width: 800px) {
     font-size: 13px;
   }
@@ -152,11 +155,16 @@ const Header: React.FC = () => {
         {topThreeCryptos.map((coin) => (
           <CryptoBlock key={coin.id}>
             <CryptoBlockDesc>
-              <CryptoImg
-                src={`https://assets.coincap.io/assets/icons/${coin.symbol.toLowerCase()}@2x.png`}
-                alt={`coin ${coin.name}`}
-              />
-              <CryptoTitle>{coin.name}</CryptoTitle>
+              <Link
+                to={`/assets/${coin.id}`}
+                className='app-header__image-link'>
+                <CryptoImg
+                  src={`https://assets.coincap.io/assets/icons/${coin.symbol.toLowerCase()}@2x.png`}
+                  alt={`coin ${coin.name}`}></CryptoImg>
+              </Link>
+              <Link to={`/assets/${coin.id}`}>
+                <CryptoTitle>{coin.name}</CryptoTitle>
+              </Link>
             </CryptoBlockDesc>
             <CryptoPrice>{`$${Number(coin.priceUsd).toFixed(2)}`}</CryptoPrice>
           </CryptoBlock>

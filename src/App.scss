@@ -79,6 +79,13 @@ a {
       display: flex;
       justify-content: space-evenly;
       list-style-type: none;
+      // flex-wrap: wrap;
+      @media (max-width: 700px) {
+        margin-top: 22px;
+      }
+      @media (max-width: 600px) {
+        margin-top: 19px;
+      }
       &__page {
         &-link {
           font-weight: 500;
@@ -91,6 +98,12 @@ a {
           border-radius: 50%;
           cursor: pointer;
           transition: all 0.2s ease;
+
+          @media (max-width: 700px) {
+            width: 30px;
+            height: 30px;
+            font-size: 14px;
+          }
 
           &:hover {
             background-color: #2702ff;

@@ -74,6 +74,8 @@ export const fetchTopThreeCryptos = createAsyncThunk<
   }
 });
 
+// export const fetch
+
 export const cryptoSlice = createSlice({
   name: 'cryptos',
   initialState,

@@ -5,6 +5,7 @@ import { fetchAllCryptos } from '../redux/cryptoSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import NotFound from './NotFound';
 import ReactPaginate from 'react-paginate';
+import Pagination from '../components/Pagination';
 
 const Title = styled.h1`
   font-size: 33px;
@@ -93,17 +94,8 @@ const tableTitleContent = [
 ];
 
 const Main: React.FC = () => {
-  const dispatch = useAppDispatch();
   const allCryptos = useAppSelector((state) => state.cryptos.cryptos);
   const error = useAppSelector((state) => state.cryptos.error);
-
-  const getAllCryptos = async (page = 0) => {
-    await dispatch(fetchAllCryptos(page));
-  };
-
-  useEffect(() => {
-    getAllCryptos();
-  }, []);
 
   if (error) {
     return <NotFound />;
@@ -122,20 +114,7 @@ const Main: React.FC = () => {
           <CryptoTableBlock key={crypto.id} {...crypto} />
         ))}
       </TableItemsBlock>
-      <ReactPaginate
-        pageLinkClassName='app-main-pagination__page-link'
-        activeLinkClassName='app-main-pagination__page-link__active'
-        breakLabel='...'
-        breakClassName='app-main-pagination__break'
-        nextLabel='>'
-        nextLinkClassName='app-main-pagination__page-link'
-        onPageChange={(page) => getAllCryptos(page.selected)}
-        pageRangeDisplayed={2}
-        pageCount={100}
-        className='app-main-pagination'
-        previousLabel='<'
-        previousLinkClassName='app-main-pagination__page-link'
-      />
+      <Pagination />
     </div>
   );
 };

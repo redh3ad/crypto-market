@@ -13,7 +13,7 @@ const CryptoBlock = styled.div`
       justify-content: space-between;
       align-items: center;
       padding: 10px 5px;
-      background-color: ${color};
+      background-color: ${Number(color) % 2 ? 'white' : '#f8f8f8'};
       transition: all 0.3s ease;
       :hover {
         z-index: 3;
@@ -199,7 +199,7 @@ const CryptoTableBlock: React.FC<TCryptoInfo> = ({
   };
 
   return (
-    <CryptoBlock color={Number(rank) % 2 ? 'white' : '#f8f8f8'}>
+    <CryptoBlock color={rank}>
       <CryptoRank>{rank}</CryptoRank>
       <Link to={`/assets/${id}`} style={{ flex: 6, textDecoration: 'none' }}>
         <CryptoDescBlock>

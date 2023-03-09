@@ -6,6 +6,7 @@ interface ICryptoState {
   cryptos: TCryptoInfo[];
   portfolio: TCryptoInfo[];
   topThree: TCryptoInfo[];
+  // cryptoInfo: TCryptoInfo;
   modalStatus: boolean;
   loading: boolean;
   error: string | unknown;
@@ -15,6 +16,7 @@ const initialState: ICryptoState = {
   cryptos: [],
   portfolio: [],
   topThree: [],
+  // cryptoInfo: ,
   modalStatus: false,
   loading: false,
   error: null,
@@ -74,7 +76,31 @@ export const fetchTopThreeCryptos = createAsyncThunk<
   }
 });
 
-// export const fetch
+export const fetchCryptoById = createAsyncThunk<
+  TCryptoInfo,
+  string,
+  { rejectValue: string }
+>('cryptos/fetchCryptoById', async (id, { rejectWithValue }) => {
+  try {
+    const { data, status } = await axios.get<{ data: TCryptoInfo }>(
+      `https://api.coincap.io/v2/assets/${id}`,
+      {
+        params: {
+          Authorization: 'Bearer 25e5456a-9800-4152-8992-1bad20319f06',
+        },
+      },
+    );
+    if (status === 200) {
+      console.log(data.data);
+      return data.data;
+    } else {
+      throw new Error('error');
+    }
+  } catch (error) {
+    const err = error as AxiosError;
+    return rejectWithValue(err.message);
+  }
+});
 
 export const cryptoSlice = createSlice({
   name: 'cryptos',

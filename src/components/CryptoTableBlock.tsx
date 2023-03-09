@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import styled, { css } from 'styled-components';
 import { addPortfolio } from '../redux/cryptoSlice';
 import { useAppDispatch } from '../redux/hooks';
 import { TCryptoInfo } from '../types/types';
 import defaultImage from '../assets/logo_mark.png';
 import { Link } from 'react-router-dom';
+import { SyntheticEventData } from 'react-dom/test-utils';
 
 const CryptoBlock = styled.div`
   ${({ color }) => {
@@ -198,16 +199,19 @@ const CryptoTableBlock: React.FC<TCryptoInfo> = ({
     }
   };
 
+  const getDefaultImage = (event: SyntheticEvent<HTMLImageElement, Event>) => {
+    const img = event.target as HTMLImageElement;
+    img.src = defaultImage;
+  };
+
   return (
     <CryptoBlock color={rank}>
       <CryptoRank>{rank}</CryptoRank>
       <Link to={`/assets/${id}`} style={{ flex: 6, textDecoration: 'none' }}>
         <CryptoDescBlock>
           <CryptoImg
-            src={
-              `https://assets.coincap.io/assets/icons/${symbol.toLowerCase()}@2x.png` ||
-              defaultImage
-            }
+            src={`https://assets.coincap.io/assets/icons/${symbol.toLowerCase()}@2x.png`}
+            onError={(event) => getDefaultImage(event)}
           />
           <div>
             <CryptoName>{name}</CryptoName>

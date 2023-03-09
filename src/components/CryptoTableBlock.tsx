@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { addPortfolio } from '../redux/cryptoSlice';
 import { useAppDispatch } from '../redux/hooks';
 import { TCryptoInfo } from '../types/types';
+import defaultImage from '../assets/logo_mark.png';
 
 const CryptoBlock = styled.div`
   ${({ color }) => {
@@ -202,7 +203,10 @@ const CryptoTableBlock: React.FC<TCryptoInfo> = ({
       <CryptoRank>{rank}</CryptoRank>
       <CryptoDescBlock>
         <CryptoImg
-          src={`https://assets.coincap.io/assets/icons/${symbol.toLowerCase()}@2x.png`}
+          src={
+            `https://assets.coincap.io/assets/icons/${symbol.toLowerCase()}@2x.png` ||
+            defaultImage
+          }
         />
         <div>
           <CryptoName>{name}</CryptoName>

@@ -18,3 +18,7 @@ https://redh3ad.github.io/crypto-market/
 - axios
 
 ---
+
+#### TODO:
+
+- вынести стайлед компоненты в отдельные файлы

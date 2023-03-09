@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import { fetchAllCryptos } from '../redux/cryptoSlice';
 import { useAppDispatch } from '../redux/hooks';
@@ -8,10 +8,23 @@ const Pagination: React.FC = () => {
   const getAllCryptos = async (page = 0) => {
     await dispatch(fetchAllCryptos(page));
   };
+  const [windowWidth, setWindowWidth] = useState(window.screen.width);
 
   useEffect(() => {
     getAllCryptos();
   }, []);
+
+  const resizeHandler = () => {
+    setWindowWidth(window.screen.width);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', resizeHandler);
+    return () => {
+      window.removeEventListener('resize', resizeHandler);
+    };
+  }, [windowWidth]);
+
   return (
     <ReactPaginate
       pageLinkClassName='app-main-pagination__page-link'
@@ -21,9 +34,9 @@ const Pagination: React.FC = () => {
       nextLabel='>'
       nextLinkClassName='app-main-pagination__page-link'
       onPageChange={(page) => getAllCryptos(page.selected)}
-      pageRangeDisplayed={window.innerWidth > 700 ? 2 : 1}
+      pageRangeDisplayed={windowWidth > 700 ? 2 : 1}
       pageCount={100}
-      marginPagesDisplayed={window.innerWidth > 540 ? 2 : 1}
+      marginPagesDisplayed={windowWidth > 540 ? 2 : 1}
       containerClassName='app-main-pagination'
       previousLabel='<'
       previousLinkClassName='app-main-pagination__page-link'

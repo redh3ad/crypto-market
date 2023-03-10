@@ -115,7 +115,7 @@ const CryptoChange = styled.p`
     return css`
       flex: 4;
       text-align: right;
-      color: ${color};
+      color: ${Number(color) > 0 ? 'green' : 'red'};
       @media (max-width: 460px) {
         font-size: 12px;
       }
@@ -231,9 +231,8 @@ const CryptoTableBlock: React.FC<TCryptoInfo> = ({
           add_card
         </CryptoAddButton>
       </CryptoParams>
-
       <CryptoParams>{MarketCapValue(volumeUsd24Hr)}</CryptoParams>
-      <CryptoChange color={Number(changePercent24Hr) > 0 ? 'green' : 'red'}>
+      <CryptoChange color={changePercent24Hr}>
         {Number(changePercent24Hr).toFixed(2)}%
       </CryptoChange>
     </CryptoBlock>

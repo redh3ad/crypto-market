@@ -5,7 +5,6 @@ import { useAppDispatch } from '../redux/hooks';
 import { TCryptoInfo } from '../types/types';
 import defaultImage from '../assets/logo_mark.png';
 import { Link } from 'react-router-dom';
-import { SyntheticEventData } from 'react-dom/test-utils';
 
 const CryptoBlock = styled.div`
   ${({ color }) => {
@@ -152,6 +151,28 @@ const CryptoAddButton = styled.span`
   }
 `;
 
+export const MarketCapValue = (marketCap: string) => {
+  const num = Number(marketCap);
+  if (num > 1000000000) {
+    return `$${(num / 1000000000).toFixed(2)}b`;
+  }
+  if (num > 1000000) {
+    return `$${(num / 1000000).toFixed(2)}m`;
+  }
+  if (num > 1000) {
+    return `$${(num / 1000).toFixed(2)}k`;
+  } else {
+    return `$${num.toFixed(2)}`;
+  }
+};
+
+export const getDefaultImage = (
+  event: SyntheticEvent<HTMLImageElement, Event>,
+) => {
+  const img = event.target as HTMLImageElement;
+  img.src = defaultImage;
+};
+
 const CryptoTableBlock: React.FC<TCryptoInfo> = ({
   id,
   rank,
@@ -182,26 +203,6 @@ const CryptoTableBlock: React.FC<TCryptoInfo> = ({
       vwap24Hr,
     };
     dispatch(addPortfolio(cryptoInfo));
-  };
-
-  const MarketCapValue = (marketCap: string) => {
-    const num = Number(marketCap);
-    if (num > 1000000000) {
-      return `$${(num / 1000000000).toFixed(2)}b`;
-    }
-    if (num > 1000000) {
-      return `$${(num / 1000000).toFixed(2)}m`;
-    }
-    if (num > 1000) {
-      return `$${(num / 1000).toFixed(2)}k`;
-    } else {
-      return `$${num.toFixed(2)}`;
-    }
-  };
-
-  const getDefaultImage = (event: SyntheticEvent<HTMLImageElement, Event>) => {
-    const img = event.target as HTMLImageElement;
-    img.src = defaultImage;
   };
 
   return (

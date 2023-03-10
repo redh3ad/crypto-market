@@ -1,12 +1,12 @@
+import { TCryptoInfo } from './../types/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
-import { TCryptoInfo } from '../types/types';
 
 interface ICryptoState {
   cryptos: TCryptoInfo[];
   portfolio: TCryptoInfo[];
   topThree: TCryptoInfo[];
-  // cryptoInfo: TCryptoInfo;
+  cryptoInfo: TCryptoInfo | null;
   modalStatus: boolean;
   loading: boolean;
   error: string | unknown;
@@ -16,7 +16,7 @@ const initialState: ICryptoState = {
   cryptos: [],
   portfolio: [],
   topThree: [],
-  // cryptoInfo: ,
+  cryptoInfo: null,
   modalStatus: false,
   loading: false,
   error: null,
@@ -91,7 +91,6 @@ export const fetchCryptoById = createAsyncThunk<
       },
     );
     if (status === 200) {
-      console.log(data.data);
       return data.data;
     } else {
       throw new Error('error');
@@ -134,6 +133,24 @@ export const cryptoSlice = createSlice({
       fetchTopThreeCryptos.fulfilled,
       (state, action: PayloadAction<TCryptoInfo[]>) => {
         state.topThree = action.payload;
+      },
+    );
+    builder.addCase(
+      fetchCryptoById.fulfilled,
+      (state, action: PayloadAction<TCryptoInfo>) => {
+        state.loading = false;
+        state.cryptoInfo = action.payload;
+      },
+    );
+    builder.addCase(fetchCryptoById.pending, (state) => {
+      state.error = null;
+      state.loading = true;
+    });
+    builder.addCase(
+      fetchCryptoById.rejected,
+      (state, action: PayloadAction<string | unknown>) => {
+        state.loading = false;
+        state.error = action.payload;
       },
     );
   },

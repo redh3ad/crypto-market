@@ -51,7 +51,7 @@ a {
     justify-content: space-between;
     align-items: center;
     padding: 30px 70px;
-    z-index: 3;
+    z-index: 10;
     -webkit-box-shadow: 0px 0px 9px -1px rgba(3, 5, 6, 0.24);
     -moz-box-shadow: 0px 0px 9px -1px rgba(3, 5, 6, 0.24);
     box-shadow: 0px 0px 9px -1px rgba(3, 5, 6, 0.24);
@@ -79,7 +79,6 @@ a {
       display: flex;
       justify-content: space-evenly;
       list-style-type: none;
-      // flex-wrap: wrap;
       @media (max-width: 700px) {
         margin-top: 22px;
       }

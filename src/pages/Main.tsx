@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import CryptoTableBlock from '../components/CryptoTableBlock';
-import { fetchAllCryptos } from '../redux/cryptoSlice';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
+
+import { useAppSelector } from '../redux/hooks';
 import NotFound from './NotFound';
-import ReactPaginate from 'react-paginate';
+
 import Pagination from '../components/Pagination';
 
 const Title = styled.h1`

@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import CryptoTableBlock from '../components/CryptoTableBlock';
-
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import { useAppSelector } from '../redux/hooks';
 import NotFound from './NotFound';
 
@@ -96,6 +97,7 @@ const tableTitleContent = [
 const Main: React.FC = () => {
   const allCryptos = useAppSelector((state) => state.cryptos.cryptos);
   const error = useAppSelector((state) => state.cryptos.error);
+  const loading = useAppSelector((state) => state.cryptos.loading);
 
   if (error) {
     return <NotFound />;
@@ -109,11 +111,15 @@ const Main: React.FC = () => {
           <TableItem key={index}>{item}</TableItem>
         ))}
       </TableTitleBlock>
-      <TableItemsBlock>
-        {allCryptos.map((crypto) => (
-          <CryptoTableBlock key={crypto.id} {...crypto} />
-        ))}
-      </TableItemsBlock>
+      {loading ? (
+        <Skeleton count={20} height={50} />
+      ) : (
+        <TableItemsBlock>
+          {allCryptos.map((crypto) => (
+            <CryptoTableBlock key={crypto.id} {...crypto} />
+          ))}
+        </TableItemsBlock>
+      )}
       <Pagination />
     </div>
   );

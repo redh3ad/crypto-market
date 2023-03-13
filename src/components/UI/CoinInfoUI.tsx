@@ -159,7 +159,6 @@ const CoinAddBlock = styled.div`
   p {
     font-size: 25px;
     margin-right: 1%;
-    /* flex: 1; */
     @media (max-width: 900px) {
       font-size: 18px;
     }
@@ -167,7 +166,6 @@ const CoinAddBlock = styled.div`
   span {
     font-size: 25px;
     font-weight: 500;
-    /* flex: 1; */
     @media (max-width: 1000px) {
       font-size: 18px;
     }

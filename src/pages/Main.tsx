@@ -111,15 +111,23 @@ const Main: React.FC = () => {
           <TableItem key={index}>{item}</TableItem>
         ))}
       </TableTitleBlock>
-      {loading ? (
-        <Skeleton count={20} height={50} />
-      ) : (
-        <TableItemsBlock>
-          {allCryptos.map((crypto) => (
+
+      <TableItemsBlock>
+        {loading ? (
+          <Skeleton
+            count={20}
+            height={50}
+            duration={1.5}
+            baseColor='#e8e8e8'
+            highlightColor='#ffffff'
+            enableAnimation={true}
+          />
+        ) : (
+          allCryptos.map((crypto) => (
             <CryptoTableBlock key={crypto.id} {...crypto} />
-          ))}
-        </TableItemsBlock>
-      )}
+          ))
+        )}
+      </TableItemsBlock>
       <Pagination />
     </div>
   );

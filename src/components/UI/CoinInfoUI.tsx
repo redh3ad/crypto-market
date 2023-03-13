@@ -168,7 +168,7 @@ const CoinAddBlock = styled.div`
     font-size: 25px;
     font-weight: 500;
     flex: 1;
-    @media (max-width: 900px) {
+    @media (max-width: 1000px) {
       font-size: 18px;
     }
   }
@@ -178,7 +178,7 @@ const CryptoImg = styled.img`
   width: 60px;
   height: 60px;
   margin-right: 2%;
-  @media (max-width: 900px) {
+  @media (max-width: 1000px) {
     width: 40px;
     height: 40px;
   }
@@ -204,7 +204,7 @@ const CoinAddButton = styled.button`
   :active {
     background-color: #2000d3;
   }
-  @media (max-width: 900px) {
+  @media (max-width: 1000px) {
     padding: 5px 10px;
     font-size: 18px;
   }
@@ -220,21 +220,17 @@ const CoinAddInput = styled.input`
   background: rgba(0, 0, 0, 0.1);
   border: none;
   margin-right: 9px;
-  flex: 8;
-  @media (max-width: 900px) {
+  flex: 3;
+  @media (max-width: 1000px) {
     font-size: 20px;
     padding: 5px;
-  }
-  @media (max-width: 700px) {
-    flex: 5;
   }
 `;
 
 const CoinAddSymbol = styled.h4`
   font-size: 25px;
   margin-right: 3%;
-  flex: 1;
-  @media (max-width: 900px) {
+  @media (max-width: 1000px) {
     font-size: 20px;
   }
 `;

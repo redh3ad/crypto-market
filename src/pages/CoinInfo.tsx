@@ -4,6 +4,7 @@ import CoinInfoIU from '../components/UI/CoinInfoUI';
 import { fetchCryptoById } from '../redux/cryptoSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import NotFound from './NotFound';
+import { Circles } from 'react-loader-spinner';
 
 const CoinInfo: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -25,7 +26,23 @@ const CoinInfo: React.FC = () => {
     return <NotFound />;
   }
   if (!cryptoInfo || loading) {
-    return <div>loading</div>;
+    return (
+      <Circles
+        height='calc(90vh - 80%)'
+        width='calc(90vw - 80%)'
+        color='#e8e8e8'
+        ariaLabel='circles-loading'
+        wrapperStyle={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '65vh',
+          padding: '20px',
+        }}
+        wrapperClass=''
+        visible={true}
+      />
+    );
   }
   return <CoinInfoIU {...cryptoInfo} />;
 };

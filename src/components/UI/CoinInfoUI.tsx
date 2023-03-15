@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { TCryptoInfo } from '../../types/types';
 import { getDefaultImage, MarketCapValue } from '../CryptoTableBlock';
+import CoinChart from './CoinChart';
 
 const CoinInfoWrapper = styled.section`
   display: flex;
@@ -233,10 +234,6 @@ const CoinAddSymbol = styled.h4`
   }
 `;
 
-const CoinGraphBlock = styled.div`
-  display: flex;
-`;
-
 const CoinInfoUI: React.FC<TCryptoInfo> = ({
   id,
   rank,
@@ -309,7 +306,7 @@ const CoinInfoUI: React.FC<TCryptoInfo> = ({
           {MarketCapValue((Number(input) * Number(priceUsd)).toFixed(2))}
         </span>
       </CoinAddBlock>
-      <CoinGraphBlock>CoinGraphBlock</CoinGraphBlock>
+      <CoinChart />
     </CoinInfoWrapper>
   );
 };

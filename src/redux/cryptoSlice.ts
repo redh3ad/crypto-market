@@ -1,4 +1,4 @@
-import { TCryptoInfo } from './../types/types';
+import { TCryptoInfo, TCryptoChart } from './../types/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
 
@@ -7,6 +7,7 @@ interface ICryptoState {
   portfolio: TCryptoInfo[];
   topThree: TCryptoInfo[];
   cryptoInfo: TCryptoInfo | null;
+  cryptoChart: TCryptoChart[];
   modalStatus: boolean;
   loading: boolean;
   error: string | unknown;
@@ -16,6 +17,7 @@ const initialState: ICryptoState = {
   cryptos: [],
   portfolio: [],
   topThree: [],
+  cryptoChart: [],
   cryptoInfo: null,
   modalStatus: false,
   loading: false,
@@ -101,6 +103,31 @@ export const fetchCryptoById = createAsyncThunk<
   }
 });
 
+export const fetchCryptoChartData = createAsyncThunk<
+  TCryptoChart[],
+  string | undefined,
+  { rejectValue: string }
+>('crypto/fetchCryptoChartData', async (name, { rejectWithValue }) => {
+  try {
+    const { data, status } = await axios.get<{ data: TCryptoChart[] }>(
+      `https://api.coincap.io/v2/assets/${name}/history?interval=m5`,
+      {
+        params: {
+          Authorization: 'Bearer 25e5456a-9800-4152-8992-1bad20319f06',
+        },
+      },
+    );
+    if (status === 200) {
+      return data.data;
+    } else {
+      throw new Error('error');
+    }
+  } catch (error) {
+    const err = error as AxiosError;
+    return rejectWithValue(err.message);
+  }
+});
+
 export const cryptoSlice = createSlice({
   name: 'cryptos',
   initialState,
@@ -151,6 +178,12 @@ export const cryptoSlice = createSlice({
       (state, action: PayloadAction<string | unknown>) => {
         state.loading = false;
         state.error = action.payload;
+      },
+    );
+    builder.addCase(
+      fetchCryptoChartData.fulfilled,
+      (state, action: PayloadAction<TCryptoChart[]>) => {
+        state.cryptoChart = action.payload.slice(1150);
       },
     );
   },

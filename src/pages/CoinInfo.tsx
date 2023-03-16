@@ -16,8 +16,6 @@ const CoinInfo: React.FC = () => {
   const error = useAppSelector((state) => state.cryptos.error);
   const loading = useAppSelector((state) => state.cryptos.loading);
 
-  console.log(cryptoInfo);
-
   useEffect(() => {
     getCryptoInfo(location);
   }, [location]);

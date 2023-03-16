@@ -11,3 +11,9 @@ export type TCryptoInfo = {
   changePercent24Hr: string;
   vwap24Hr: string;
 };
+
+export type TCryptoChart = {
+  priceUsd: string;
+  time: number;
+  date: string;
+};

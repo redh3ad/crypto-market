@@ -216,7 +216,6 @@ export const cryptoSlice = createSlice({
           100 -
           (Number(action.payload[0].priceUsd) * 100) /
             Number(action.payload[action.payload.length - 1].priceUsd);
-        console.log(ch);
         state.cryptoChartInfo.change = ch.toFixed(2).toString();
       },
     );

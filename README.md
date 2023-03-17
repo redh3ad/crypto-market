@@ -16,10 +16,10 @@ https://redh3ad.github.io/crypto-market/
 - styled-components / sass
 - redux-toolkit
 - axios
+- chart.js
 
 ---
 
 #### TODO:
 
 - вынести стайлед компоненты в отдельные файлы
-- добавить загрузчики и визуализировать ошибки на страницах

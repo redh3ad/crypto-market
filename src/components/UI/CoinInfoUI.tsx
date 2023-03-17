@@ -307,7 +307,7 @@ const CoinInfoUI: React.FC<TCryptoInfo> = ({
           {MarketCapValue((Number(input) * Number(priceUsd)).toFixed(2))}
         </span>
       </CoinAddBlock>
-      <CoinChart />
+      <CoinChart nameCoin={name} symbolCoin={symbol} />
     </CoinInfoWrapper>
   );
 };

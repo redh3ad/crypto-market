@@ -1,4 +1,4 @@
-import { TCryptoInfo, TCryptoChart } from './../types/types';
+import { TCryptoInfo, TCryptoChart, TCryptoChartInfo } from './../types/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
 
@@ -8,6 +8,7 @@ interface ICryptoState {
   topThree: TCryptoInfo[];
   cryptoInfo: TCryptoInfo | null;
   cryptoChart: TCryptoChart[];
+  cryptoChartInfo: TCryptoChartInfo;
   modalStatus: boolean;
   loading: boolean;
   error: string | unknown;
@@ -18,6 +19,7 @@ const initialState: ICryptoState = {
   portfolio: [],
   topThree: [],
   cryptoChart: [],
+  cryptoChartInfo: { high: '', low: '', average: '', change: '' },
   cryptoInfo: null,
   modalStatus: false,
   loading: false,
@@ -196,6 +198,26 @@ export const cryptoSlice = createSlice({
       fetchCryptoChartData.fulfilled,
       (state, action: PayloadAction<TCryptoChart[]>) => {
         state.cryptoChart = action.payload;
+        let max = Number(action.payload[0].priceUsd);
+        let min = Number(action.payload[0].priceUsd);
+        const sumOfPrice = action.payload.reduce(
+          (acc, number) => acc + Number(number.priceUsd),
+          0,
+        );
+        let average = sumOfPrice / action.payload.length;
+        action.payload.forEach((el) => {
+          if (Number(el.priceUsd) > max) max = Number(el.priceUsd);
+          if (Number(el.priceUsd) < min) min = Number(el.priceUsd);
+        });
+        state.cryptoChartInfo.high = max.toFixed(2).toString();
+        state.cryptoChartInfo.low = min.toFixed(2).toString();
+        state.cryptoChartInfo.average = average.toFixed(2).toString();
+        let ch =
+          100 -
+          (Number(action.payload[0].priceUsd) * 100) /
+            Number(action.payload[action.payload.length - 1].priceUsd);
+        console.log(ch);
+        state.cryptoChartInfo.change = ch.toFixed(2).toString();
       },
     );
   },

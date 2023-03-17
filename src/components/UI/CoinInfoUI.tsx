@@ -183,7 +183,7 @@ const CryptoImg = styled.img`
   }
 `;
 
-const CoinAddButton = styled.button`
+export const CoinAddButton = styled.button`
   font-size: 20px;
   padding: 5px 20px;
   border: none;

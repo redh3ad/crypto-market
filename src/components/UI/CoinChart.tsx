@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Chart as ChartJS,
@@ -17,10 +17,18 @@ import { fetchCryptoChartData } from '../../redux/cryptoSlice';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { TCryptoChart } from '../../types/types';
+import { CoinAddButton } from './CoinInfoUI';
 
 const ChartWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   padding: 55px 0px 0px 0px;
+`;
+
+const ChartButtons = styled.div`
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 50px 0px 50px;
 `;
 
 ChartJS.register(
@@ -35,32 +43,42 @@ ChartJS.register(
 );
 
 const CoinChart = () => {
+  const [dateFilter, setDateFilter] = useState<string>('day');
   const dispatch = useAppDispatch();
   const chartData = useAppSelector((state) => state.cryptos.cryptoChart);
-  const coinName = useLocation().pathname.split('/').pop();
+  const name = useLocation().pathname.split('/').pop();
 
-  const chartDataLoading = async () => {
-    await dispatch(fetchCryptoChartData(coinName));
+  const chartDataLoading = async (dateFilter: string) => {
+    await dispatch(fetchCryptoChartData({ name, dateFilter }));
   };
 
   useEffect(() => {
-    chartDataLoading();
-  }, []);
+    chartDataLoading(dateFilter);
+  }, [dateFilter]);
 
   const options = {
     responsive: true,
     scales: {
       x: {
         ticks: {
-          callback: function (value: string | number, index: number) {
+          callback: function (
+            value: string | number,
+            index: number,
+            ticks: any,
+          ) {
             const date = new Date(chartData[index].time).toString();
             const dateArray = date.split(' ');
-            const timeArray = dateArray[4].slice(0, 5);
-            const q = `${dateArray[1]} ${dateArray[2]}, ${dateArray[3]} - ${timeArray}`;
-            const b = `${dateArray[1]} ${dateArray[2]}, ${dateArray[3]} - ${timeArray}`;
-            return q.slice(-2, q.length) === '00' ? b.slice(-5, b.length) : '';
+            if (dateFilter === 'month') {
+              const timeArray = `${dateArray[1]} ${dateArray[2]}`;
+              return timeArray;
+            } else if (dateFilter === 'year') {
+              const timeArray = `${dateArray[1]} ${dateArray[3]}`;
+              return timeArray;
+            } else {
+              const timeArray = dateArray[4].slice(0, 5);
+              return timeArray;
+            }
           },
-          color: 'black',
         },
         grid: {
           display: false,
@@ -97,6 +115,17 @@ const CoinChart = () => {
   return (
     <ChartWrapper>
       <Line options={options} data={data} />
+      <ChartButtons>
+        <CoinAddButton onClick={() => setDateFilter('day')}>Day</CoinAddButton>
+        <CoinAddButton onClick={() => setDateFilter('month')}>
+          Month
+        </CoinAddButton>
+        <CoinAddButton
+          onClick={() => setDateFilter('year')}
+          style={{ marginRight: '0px' }}>
+          Year
+        </CoinAddButton>
+      </ChartButtons>
     </ChartWrapper>
   );
 };

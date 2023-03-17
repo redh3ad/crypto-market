@@ -105,12 +105,24 @@ export const fetchCryptoById = createAsyncThunk<
 
 export const fetchCryptoChartData = createAsyncThunk<
   TCryptoChart[],
-  string | undefined,
+  { name: string | undefined; dateFilter: string },
   { rejectValue: string }
->('crypto/fetchCryptoChartData', async (name, { rejectWithValue }) => {
+>('crypto/fetchCryptoChartData', async (data, { rejectWithValue }) => {
+  const { name, dateFilter } = data;
+  const timeZone = (Number(new Date().getTimezoneOffset()) / 60) * -3600000;
+  const dateNow = Date.parse(new Date().toString()) + timeZone;
+  let dateAgo = dateNow - 97500000;
+  let interval = 'm5';
+  if (dateFilter === 'month') {
+    dateAgo = dateNow - 2580000000;
+    interval = 'h2';
+  } else if (dateFilter === 'year') {
+    dateAgo = dateNow - 31536000000;
+    interval = 'd1';
+  }
   try {
     const { data, status } = await axios.get<{ data: TCryptoChart[] }>(
-      `https://api.coincap.io/v2/assets/${name}/history?interval=m5`,
+      `https://api.coincap.io/v2/assets/${name}/history?interval=${interval}&start=${dateAgo}&end=${dateNow}`,
       {
         params: {
           Authorization: 'Bearer 25e5456a-9800-4152-8992-1bad20319f06',
@@ -183,7 +195,7 @@ export const cryptoSlice = createSlice({
     builder.addCase(
       fetchCryptoChartData.fulfilled,
       (state, action: PayloadAction<TCryptoChart[]>) => {
-        state.cryptoChart = action.payload.slice(1150);
+        state.cryptoChart = action.payload;
       },
     );
   },

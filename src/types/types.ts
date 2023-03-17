@@ -17,3 +17,10 @@ export type TCryptoChart = {
   time: number;
   date: string;
 };
+
+export type TCryptoChartInfo = {
+  high: string;
+  low: string;
+  average: string;
+  change: string;
+};

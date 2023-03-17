@@ -184,6 +184,7 @@ const CryptoImg = styled.img`
 `;
 
 export const CoinAddButton = styled.button`
+  max-width: 200px;
   font-size: 20px;
   padding: 5px 20px;
   border: none;

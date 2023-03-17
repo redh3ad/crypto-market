@@ -265,8 +265,9 @@ const CoinInfoUI: React.FC<TCryptoInfo> = ({
             <CryptoChange color={changePercent24Hr}>
               {Number(changePercent24Hr).toFixed(2)}%
               <span className='material-symbols-outlined'>
-                keyboard_double_arrow_
-                {Number(changePercent24Hr) > 0 ? 'up' : 'down'}
+                {`keyboard_double_arrow_${
+                  Number(changePercent24Hr) > 0 ? 'up' : 'down'
+                }`}
               </span>
             </CryptoChange>
           </CoinPrice>

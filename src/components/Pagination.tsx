@@ -7,7 +7,6 @@ const Pagination: React.FC = () => {
   const dispatch = useAppDispatch();
   const getAllCryptos = async (page = 0) => {
     await dispatch(fetchAllCryptos(page));
-    window.scrollTo(0, 10000);
   };
   const [windowWidth, setWindowWidth] = useState(window.screen.width);
 

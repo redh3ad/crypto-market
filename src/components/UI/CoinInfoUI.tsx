@@ -1,7 +1,10 @@
 import React, { ChangeEvent, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { addPortfolio } from '../../redux/cryptoSlice';
+import { useAppDispatch } from '../../redux/hooks';
 import { TCryptoInfo } from '../../types/types';
-import { getDefaultImage, MarketCapValue } from '../CryptoTableBlock';
+import { getDefaultImage } from '../../utils/getDefaultImage';
+import { MarketCapValue } from '../../utils/marketCapValue';
 import CoinChart from './CoinChart';
 
 const CoinInfoWrapper = styled.section`
@@ -249,6 +252,26 @@ const CoinInfoUI: React.FC<TCryptoInfo> = ({
   vwap24Hr,
 }) => {
   const [input, setInput] = useState<string>('');
+  const dispatch = useAppDispatch();
+
+  const buyCrypto = () => {
+    const cryptoInfo = {
+      id,
+      rank,
+      symbol,
+      name,
+      supply,
+      maxSupply,
+      marketCapUsd,
+      volumeUsd24Hr,
+      priceUsd,
+      changePercent24Hr,
+      vwap24Hr,
+      count: Number(input),
+    };
+    dispatch(addPortfolio(cryptoInfo));
+    setInput('');
+  };
 
   return (
     <CoinInfoWrapper>
@@ -293,7 +316,7 @@ const CoinInfoUI: React.FC<TCryptoInfo> = ({
           src={`https://assets.coincap.io/assets/icons/${symbol.toLowerCase()}@2x.png`}
           onError={(event) => getDefaultImage(event)}
         />
-        <CoinAddButton>Buy</CoinAddButton>
+        <CoinAddButton onClick={buyCrypto}>Buy</CoinAddButton>
         <CoinAddInput
           value={input}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>

@@ -1,10 +1,17 @@
-import { TCryptoInfo, TCryptoChart, TCryptoChartInfo } from './../types/types';
+import {
+  TCryptoInfo,
+  TCryptoChart,
+  TCryptoChartInfo,
+  TCryptoPortfolio,
+} from './../types/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
+import { calcTotalPrice } from '../utils/calcTotalPrice';
 
 interface ICryptoState {
   cryptos: TCryptoInfo[];
-  portfolio: TCryptoInfo[];
+  portfolio: TCryptoPortfolio[];
+  portfolioPrice: string;
   topThree: TCryptoInfo[];
   cryptoInfo: TCryptoInfo | null;
   cryptoChart: TCryptoChart[];
@@ -17,6 +24,7 @@ interface ICryptoState {
 const initialState: ICryptoState = {
   cryptos: [],
   portfolio: [],
+  portfolioPrice: '',
   topThree: [],
   cryptoChart: [],
   cryptoChartInfo: { high: '', low: '', average: '', change: '' },
@@ -146,8 +154,19 @@ export const cryptoSlice = createSlice({
   name: 'cryptos',
   initialState,
   reducers: {
-    addPortfolio: (state, action: PayloadAction<TCryptoInfo>) => {
-      state.portfolio = [...state.portfolio, action.payload];
+    addPortfolio: (state, action: PayloadAction<TCryptoPortfolio>) => {
+      const findItem = state.portfolio.find(
+        (obj) => obj.id === action.payload.id,
+      );
+
+      if (findItem) {
+        findItem.count = findItem.count + action.payload.count;
+        findItem.priceUsd = action.payload.priceUsd;
+      } else {
+        state.portfolio.push({ ...action.payload });
+      }
+
+      state.portfolioPrice = calcTotalPrice(state.portfolio);
     },
   },
   extraReducers: (builder) => {

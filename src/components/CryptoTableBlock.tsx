@@ -1,10 +1,11 @@
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import { addPortfolio } from '../redux/cryptoSlice';
 import { useAppDispatch } from '../redux/hooks';
 import { TCryptoInfo } from '../types/types';
-import defaultImage from '../assets/logo_mark.png';
+
 import { Link } from 'react-router-dom';
+import { MarketCapValue } from '../utils/marketCapValue';
 
 const CryptoBlock = styled.div`
   ${({ color }) => {
@@ -151,28 +152,6 @@ const CryptoAddButton = styled.span`
   }
 `;
 
-export const MarketCapValue = (marketCap: string) => {
-  const num = Number(marketCap);
-  if (num > 1000000000) {
-    return `$${(num / 1000000000).toFixed(2)}b`;
-  }
-  if (num > 1000000) {
-    return `$${(num / 1000000).toFixed(2)}m`;
-  }
-  if (num > 1000) {
-    return `$${(num / 1000).toFixed(2)}k`;
-  } else {
-    return `$${num.toFixed(2)}`;
-  }
-};
-
-export const getDefaultImage = (
-  event: SyntheticEvent<HTMLImageElement, Event>,
-) => {
-  const img = event.target as HTMLImageElement;
-  img.src = defaultImage;
-};
-
 const CryptoTableBlock: React.FC<TCryptoInfo> = ({
   id,
   rank,
@@ -188,22 +167,28 @@ const CryptoTableBlock: React.FC<TCryptoInfo> = ({
 }) => {
   const dispatch = useAppDispatch();
 
-  const addCryptoInPortfolio = () => {
-    const cryptoInfo = {
-      id,
-      rank,
-      symbol,
-      name,
-      supply,
-      maxSupply,
-      marketCapUsd,
-      volumeUsd24Hr,
-      priceUsd,
-      changePercent24Hr,
-      vwap24Hr,
-    };
-    dispatch(addPortfolio(cryptoInfo));
-  };
+  function getDefaultImage(
+    event: React.SyntheticEvent<HTMLImageElement, Event>,
+  ): void {
+    throw new Error('Function not implemented.');
+  }
+
+  // const addCryptoInPortfolio = () => {
+  //   const cryptoInfo = {
+  //     id,
+  //     rank,
+  //     symbol,
+  //     name,
+  //     supply,
+  //     maxSupply,
+  //     marketCapUsd,
+  //     volumeUsd24Hr,
+  //     priceUsd,
+  //     changePercent24Hr,
+  //     vwap24Hr,
+  //   };
+  //   dispatch(addPortfolio(cryptoInfo));
+  // };
 
   return (
     <CryptoBlock color={rank}>
@@ -226,7 +211,7 @@ const CryptoTableBlock: React.FC<TCryptoInfo> = ({
       <CryptoParams>{`$${Number(vwap24Hr).toFixed(2)}`}</CryptoParams>
       <CryptoParams>
         <CryptoAddButton
-          onClick={addCryptoInPortfolio}
+          // onClick={addCryptoInPortfolio}
           className='material-symbols-outlined'>
           add_card
         </CryptoAddButton>

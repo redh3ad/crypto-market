@@ -113,29 +113,28 @@ const PortfolioIcon = styled.span`
 `;
 
 const PortfolioNum = styled.span`
-  top: -5px;
-  right: -5px;
-  padding-top: 1px;
+  top: -12px;
+  right: -30px;
+  padding: 2px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%;
-  font-size: 15px;
+  border-radius: 6px;
+  font-size: 14px;
   color: white;
   background-color: #2702ff;
   position: absolute;
-  width: 20px;
-  height: 20px;
   @media (max-width: 768px) {
-    font-size: 13px;
-    width: 18px;
-    height: 18px;
+    font-size: 12px;
+  }
+  @media (max-width: 375px) {
+    font-size: 11px;
   }
 `;
 
 const Header: React.FC = () => {
   const dispatch = useAppDispatch();
-  const itemsInPortfolio = useAppSelector((state) => state.cryptos.portfolio);
+  const totalPrice = useAppSelector((state) => state.cryptos.portfolioPrice);
   const topThreeCryptos = useAppSelector((state) => state.cryptos.topThree);
 
   const getAllCryptos = async () => {
@@ -171,11 +170,7 @@ const Header: React.FC = () => {
         ))}
       </CryptoPopularContainer>
       <PortfolioIcon className='material-symbols-outlined'>
-        {itemsInPortfolio.length ? (
-          <PortfolioNum>{itemsInPortfolio.length}</PortfolioNum>
-        ) : (
-          ''
-        )}
+        {totalPrice ? <PortfolioNum>{totalPrice}</PortfolioNum> : ''}
         business_center
       </PortfolioIcon>
     </div>

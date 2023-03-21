@@ -1,19 +1,30 @@
-import React, { ChangeEvent, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { addPortfolio } from '../../redux/cryptoSlice';
-import { useAppDispatch } from '../../redux/hooks';
-import { TCryptoInfo } from '../../types/types';
-import { getDefaultImage } from '../../utils/getDefaultImage';
-import { MarketCapValue } from '../../utils/marketCapValue';
-import CoinChart from './CoinChart';
+import { Circles } from 'react-loader-spinner';
+export const CircleLoading = (
+  <Circles
+    height='calc(90vh - 80%)'
+    width='calc(90vw - 80%)'
+    color='#e8e8e8'
+    ariaLabel='circles-loading'
+    wrapperStyle={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '65vh',
+      padding: '20px',
+    }}
+    wrapperClass=''
+    visible={true}
+  />
+);
 
-const CoinInfoWrapper = styled.section`
+export const CoinInfoWrapper = styled.section`
   display: flex;
   flex-direction: column;
   color: #fff;
 `;
 
-const CoinInfoBlock = styled.div`
+export const CoinInfoBlock = styled.div`
   display: flex;
   justify-content: space-between;
   background-image: linear-gradient(to right, #3d1bff, rgb(82, 177, 255));
@@ -25,7 +36,7 @@ const CoinInfoBlock = styled.div`
   }
 `;
 
-const RankBlock = styled.div`
+export const RankBlock = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -51,7 +62,7 @@ const RankBlock = styled.div`
   }
 `;
 
-const TitleBlock = styled.div`
+export const TitleBlock = styled.div`
   flex: 3;
   display: flex;
   flex-direction: column;
@@ -68,7 +79,7 @@ const TitleBlock = styled.div`
   }
 `;
 
-const CoinPrice = styled.div`
+export const CoinPrice = styled.div`
   display: flex;
   align-items: center;
   font-size: 23px;
@@ -80,7 +91,7 @@ const CoinPrice = styled.div`
   }
 `;
 
-const CryptoChange = styled.p`
+export const CryptoChange = styled.p`
   ${({ color }) => {
     return css`
       display: flex;
@@ -98,7 +109,7 @@ const CryptoChange = styled.p`
   }}
 `;
 
-const AnotherInfoBlock = styled.div`
+export const AnotherInfoBlock = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -144,7 +155,7 @@ const AnotherInfoBlock = styled.div`
   }
 `;
 
-const CoinAddBlock = styled.div`
+export const CoinAddBlock = styled.div`
   display: flex;
   flex-wrap: wrap;
   color: #000;
@@ -176,7 +187,7 @@ const CoinAddBlock = styled.div`
   }
 `;
 
-const CryptoImg = styled.img`
+export const CryptoImg = styled.img`
   width: 60px;
   height: 60px;
   margin-right: 2%;
@@ -213,7 +224,7 @@ export const CoinAddButton = styled.button`
   }
 `;
 
-const CoinAddInput = styled.input`
+export const CoinAddInput = styled.input`
   border-radius: 5px;
   padding: 7px;
   font-size: 24px;
@@ -230,110 +241,10 @@ const CoinAddInput = styled.input`
   }
 `;
 
-const CoinAddSymbol = styled.h4`
+export const CoinAddSymbol = styled.h4`
   font-size: 25px;
   margin-right: 3%;
   @media (max-width: 1000px) {
     font-size: 20px;
   }
 `;
-
-const CoinInfoUI: React.FC<TCryptoInfo> = ({
-  id,
-  rank,
-  symbol,
-  name,
-  supply,
-  maxSupply,
-  marketCapUsd,
-  volumeUsd24Hr,
-  priceUsd,
-  changePercent24Hr,
-  vwap24Hr,
-}) => {
-  const [input, setInput] = useState<string>('');
-  const dispatch = useAppDispatch();
-
-  const buyCrypto = () => {
-    const cryptoInfo = {
-      id,
-      rank,
-      symbol,
-      name,
-      supply,
-      maxSupply,
-      marketCapUsd,
-      volumeUsd24Hr,
-      priceUsd,
-      changePercent24Hr,
-      vwap24Hr,
-      count: Number(input),
-    };
-    dispatch(addPortfolio(cryptoInfo));
-    setInput('');
-  };
-
-  return (
-    <CoinInfoWrapper>
-      <CoinInfoBlock>
-        <RankBlock>
-          <h2>{rank}</h2>
-          RANK
-        </RankBlock>
-        <TitleBlock>
-          <div>
-            {name}({symbol})
-          </div>
-          <CoinPrice>
-            ${Number(priceUsd).toFixed(2)}
-            <CryptoChange color={changePercent24Hr}>
-              {Number(changePercent24Hr).toFixed(2)}%
-              <span className='material-symbols-outlined'>
-                {`keyboard_double_arrow_${
-                  Number(changePercent24Hr) > 0 ? 'up' : 'down'
-                }`}
-              </span>
-            </CryptoChange>
-          </CoinPrice>
-        </TitleBlock>
-        <AnotherInfoBlock>
-          <div>
-            Market Cap<p>{MarketCapValue(marketCapUsd)}</p>
-          </div>
-          <div>
-            Volume (24Hr)<p>{MarketCapValue(volumeUsd24Hr)}</p>
-          </div>
-          <div>
-            Supply
-            <p>
-              {MarketCapValue(supply)} {symbol}
-            </p>
-          </div>
-        </AnotherInfoBlock>
-      </CoinInfoBlock>
-      <CoinAddBlock>
-        <CryptoImg
-          src={`https://assets.coincap.io/assets/icons/${symbol.toLowerCase()}@2x.png`}
-          onError={(event) => getDefaultImage(event)}
-        />
-        <CoinAddButton onClick={buyCrypto}>Buy</CoinAddButton>
-        <CoinAddInput
-          value={input}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            Number(e.target.value) >= 0 ? setInput(e.target.value) : 0
-          }
-          type='number'
-          placeholder='Enter quantity'
-        />
-        <CoinAddSymbol>{symbol}</CoinAddSymbol>
-        <p>for</p>
-        <span>
-          {MarketCapValue((Number(input) * Number(priceUsd)).toFixed(2))}
-        </span>
-      </CoinAddBlock>
-      <CoinChart nameCoin={name} symbolCoin={symbol} />
-    </CoinInfoWrapper>
-  );
-};
-
-export default CoinInfoUI;

@@ -20,7 +20,3 @@ https://redh3ad.github.io/crypto-market/
 - chart.js
 
 ---
-
-#### TODO:
-
-- вынести стайлед компоненты в отдельные файлы

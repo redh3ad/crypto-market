@@ -39,3 +39,5 @@ export type TCryptoChartInfo = {
   average: string;
   change: string;
 };
+
+export type TChartDateFilter = 'day' | 'month' | 'year';

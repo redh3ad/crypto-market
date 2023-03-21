@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled, { css } from 'styled-components';
-import { addPortfolio } from '../redux/cryptoSlice';
 import { useAppDispatch } from '../redux/hooks';
 import { TCryptoInfo } from '../types/types';
-
 import { Link } from 'react-router-dom';
 import { MarketCapValue } from '../utils/marketCapValue';
 
@@ -152,73 +150,52 @@ const CryptoAddButton = styled.span`
   }
 `;
 
-const CryptoTableBlock: React.FC<TCryptoInfo> = ({
-  id,
-  rank,
-  symbol,
-  name,
-  supply,
-  maxSupply,
-  marketCapUsd,
-  volumeUsd24Hr,
-  priceUsd,
-  changePercent24Hr,
-  vwap24Hr,
-}) => {
-  const dispatch = useAppDispatch();
+interface ICryptoTableBlock {
+  crypto: TCryptoInfo;
+  addCryptoClickHandler: (crypto: TCryptoInfo) => void;
+}
 
+const CryptoTableBlock: React.FC<ICryptoTableBlock> = ({
+  crypto,
+  addCryptoClickHandler,
+}) => {
   function getDefaultImage(
     event: React.SyntheticEvent<HTMLImageElement, Event>,
   ): void {
     throw new Error('Function not implemented.');
   }
 
-  // const addCryptoInPortfolio = () => {
-  //   const cryptoInfo = {
-  //     id,
-  //     rank,
-  //     symbol,
-  //     name,
-  //     supply,
-  //     maxSupply,
-  //     marketCapUsd,
-  //     volumeUsd24Hr,
-  //     priceUsd,
-  //     changePercent24Hr,
-  //     vwap24Hr,
-  //   };
-  //   dispatch(addPortfolio(cryptoInfo));
-  // };
-
   return (
-    <CryptoBlock color={rank}>
-      <CryptoRank>{rank}</CryptoRank>
-      <Link to={`/assets/${id}`} style={{ flex: 6, textDecoration: 'none' }}>
+    <CryptoBlock color={crypto.rank}>
+      <CryptoRank>{crypto.rank}</CryptoRank>
+      <Link
+        to={`/assets/${crypto.id}`}
+        style={{ flex: 6, textDecoration: 'none' }}>
         <CryptoDescBlock>
           <CryptoImg
-            src={`https://assets.coincap.io/assets/icons/${symbol.toLowerCase()}@2x.png`}
+            src={`https://assets.coincap.io/assets/icons/${crypto.symbol.toLowerCase()}@2x.png`}
             onError={(event) => getDefaultImage(event)}
           />
           <div>
-            <CryptoName>{name}</CryptoName>
-            <CryptoSymbol>{symbol}</CryptoSymbol>
+            <CryptoName>{crypto.name}</CryptoName>
+            <CryptoSymbol>{crypto.symbol}</CryptoSymbol>
           </div>
         </CryptoDescBlock>
       </Link>
 
-      <CryptoParams>{`$${Number(priceUsd).toFixed(2)}`}</CryptoParams>
-      <CryptoParams>{MarketCapValue(marketCapUsd)}</CryptoParams>
-      <CryptoParams>{`$${Number(vwap24Hr).toFixed(2)}`}</CryptoParams>
+      <CryptoParams>{`$${Number(crypto.priceUsd).toFixed(2)}`}</CryptoParams>
+      <CryptoParams>{MarketCapValue(crypto.marketCapUsd)}</CryptoParams>
+      <CryptoParams>{`$${Number(crypto.vwap24Hr).toFixed(2)}`}</CryptoParams>
       <CryptoParams>
         <CryptoAddButton
-          // onClick={addCryptoInPortfolio}
+          onClick={() => addCryptoClickHandler(crypto)}
           className='material-symbols-outlined'>
           add_card
         </CryptoAddButton>
       </CryptoParams>
-      <CryptoParams>{MarketCapValue(volumeUsd24Hr)}</CryptoParams>
-      <CryptoChange color={changePercent24Hr}>
-        {Number(changePercent24Hr).toFixed(2)}%
+      <CryptoParams>{MarketCapValue(crypto.volumeUsd24Hr)}</CryptoParams>
+      <CryptoChange color={crypto.changePercent24Hr}>
+        {Number(crypto.changePercent24Hr).toFixed(2)}%
       </CryptoChange>
     </CryptoBlock>
   );

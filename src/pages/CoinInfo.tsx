@@ -21,7 +21,7 @@ import NotFound from './NotFound';
 
 import { getDefaultImage } from '../utils/getDefaultImage';
 import { MarketCapValue } from '../utils/marketCapValue';
-import CoinChart from '../components/UI/CoinChart';
+import CoinChart from '../components/CoinChart';
 
 const CoinInfo: React.FC = () => {
   const [input, setInput] = useState<string>('');

@@ -1,36 +1,42 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import styled from 'styled-components';
+import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { TCryptoInfo } from '../types/types';
-
-const CoinAddModalWrapper = styled.div`
-  position: fixed;
-  z-index: 30;
-  top: 0;
-  left: 0;
-  background-color: rgb(0, 0, 0, 0.2);
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CoinAddModalBlock = styled.div`
-  background-color: white;
-  width: 60%;
-  height: 50%;
-  padding: 40px;
-`;
+import {
+  CoinAddModalBackground,
+  CoinAddModalBlock,
+  CoinAddModalWrapper,
+} from './UI/CryptoAddModalUI';
 
 interface ICoinAddModal {
   crypto: TCryptoInfo | null;
-  setModulStatus: Dispatch<SetStateAction<boolean>>;
+  setModalStatus: Dispatch<SetStateAction<boolean>>;
 }
 
-const CoinAddModal: React.FC<ICoinAddModal> = ({ crypto, setModulStatus }) => {
+const CoinAddModal: React.FC<ICoinAddModal> = ({ crypto, setModalStatus }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const _event = e as MouseEvent & {
+        path: Node[];
+      };
+      if (
+        modalRef.current &&
+        _event.composedPath().includes(modalRef.current)
+      ) {
+        setModalStatus(false);
+      }
+    };
+    document.body.addEventListener('click', handleClickOutside);
+    document.body.style.overflowY = 'hidden';
+    return () => {
+      document.body.style.overflowY = 'auto';
+      document.body.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <CoinAddModalWrapper onClick={() => setModulStatus(false)}>
+    <CoinAddModalWrapper>
+      <CoinAddModalBackground ref={modalRef}></CoinAddModalBackground>
       <CoinAddModalBlock>{crypto?.name}</CoinAddModalBlock>
     </CoinAddModalWrapper>
   );

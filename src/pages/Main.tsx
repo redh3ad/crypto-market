@@ -97,7 +97,7 @@ const tableTitleContent = [
 ];
 
 const Main: React.FC = () => {
-  const [modalStatus, setModulStatus] = useState<boolean>(false);
+  const [modalStatus, setModalStatus] = useState<boolean>(false);
 
   const allCryptos = useAppSelector((state) => state.cryptos.cryptos);
   const [modalCryptoInfo, setModalCryptoInfo] = useState<TCryptoInfo | null>(
@@ -107,7 +107,7 @@ const Main: React.FC = () => {
   const loading = useAppSelector((state) => state.cryptos.loading);
 
   const addCryptoClickHandler = (crypto: TCryptoInfo) => {
-    setModulStatus(true);
+    setModalStatus(true);
     setModalCryptoInfo(crypto);
   };
 
@@ -148,7 +148,7 @@ const Main: React.FC = () => {
       {modalStatus && (
         <CoinAddModal
           crypto={modalCryptoInfo}
-          setModulStatus={setModulStatus}
+          setModalStatus={setModalStatus}
         />
       )}
     </div>

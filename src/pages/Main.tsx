@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import CryptoTableBlock from '../components/CryptoTableBlock';
 import Skeleton from 'react-loading-skeleton';
@@ -7,6 +7,8 @@ import { useAppSelector } from '../redux/hooks';
 import NotFound from './NotFound';
 
 import Pagination from '../components/Pagination';
+import CoinAddModal from '../components/CoinAddModal';
+import { TCryptoChartInfo, TCryptoInfo } from '../types/types';
 
 const Title = styled.h1`
   font-size: 33px;
@@ -95,9 +97,19 @@ const tableTitleContent = [
 ];
 
 const Main: React.FC = () => {
+  const [modalStatus, setModulStatus] = useState<boolean>(false);
+
   const allCryptos = useAppSelector((state) => state.cryptos.cryptos);
+  const [modalCryptoInfo, setModalCryptoInfo] = useState<TCryptoInfo | null>(
+    null,
+  );
   const error = useAppSelector((state) => state.cryptos.error);
   const loading = useAppSelector((state) => state.cryptos.loading);
+
+  const addCryptoClickHandler = (crypto: TCryptoInfo) => {
+    setModulStatus(true);
+    setModalCryptoInfo(crypto);
+  };
 
   if (error) {
     return <NotFound />;
@@ -124,11 +136,21 @@ const Main: React.FC = () => {
           />
         ) : (
           allCryptos.map((crypto) => (
-            <CryptoTableBlock key={crypto.id} {...crypto} />
+            <CryptoTableBlock
+              key={crypto.id}
+              addCryptoClickHandler={addCryptoClickHandler}
+              crypto={crypto}
+            />
           ))
         )}
       </TableItemsBlock>
       <Pagination />
+      {modalStatus && (
+        <CoinAddModal
+          crypto={modalCryptoInfo}
+          setModulStatus={setModulStatus}
+        />
+      )}
     </div>
   );
 };

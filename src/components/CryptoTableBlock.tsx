@@ -13,6 +13,7 @@ import {
   CryptoRank,
   CryptoSymbol,
 } from './UI/CryptoTableBlock';
+import { getDefaultImage } from '../utils/getDefaultImage';
 
 interface ICryptoTableBlock {
   crypto: TCryptoInfo;
@@ -23,12 +24,6 @@ const CryptoTableBlock: React.FC<ICryptoTableBlock> = ({
   crypto,
   addCryptoClickHandler,
 }) => {
-  function getDefaultImage(
-    event: React.SyntheticEvent<HTMLImageElement, Event>,
-  ): void {
-    throw new Error('Function not implemented.');
-  }
-
   return (
     <CryptoBlock color={crypto.rank}>
       <CryptoRank>{crypto.rank}</CryptoRank>

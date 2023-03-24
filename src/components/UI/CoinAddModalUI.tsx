@@ -51,10 +51,10 @@ export const CoinAddModalBlock = styled.div`
   animation-name: slide-in;
   animation-duration: 0.5s;
   @keyframes slide-in {
-    from {
-      transform: translateY(-150px);
+    0% {
+      transform: translateY(-50vh);
     }
-    to {
+    100% {
       transform: translateY(0);
     }
   }
@@ -119,8 +119,8 @@ export const CoinAddInput = styled.input`
   color: rgba(0, 0, 0, 0.9);
   background: rgba(0, 0, 0, 0.1);
   border: none;
-  margin-right: 9px;
-  width: 87%;
+  margin-right: 5px;
+  width: 90%;
   overflow-x: scroll;
   @media (max-width: 950px) {
     padding: 5px;

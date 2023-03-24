@@ -27,8 +27,8 @@ const tableTitleContent = [
 
 const Main: React.FC = () => {
   const [modalStatus, setModalStatus] = useState<boolean>(false);
-  const [modalCryptoInfo, setModalCryptoInfo] = useState<TCryptoInfo | null>(
-    null,
+  const [modalCryptoInfo, setModalCryptoInfo] = useState<TCryptoInfo>(
+    {} as TCryptoInfo,
   );
 
   const allCryptos = useAppSelector((state) => state.cryptos.cryptos);

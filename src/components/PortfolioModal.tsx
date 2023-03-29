@@ -1,7 +1,8 @@
 import React from 'react';
+import { ModalWrapper } from './UI/PortfolioModalUI';
 
 const PortfolioModal: React.FC = () => {
-  return <div>PortfolioModal</div>;
+  return <ModalWrapper>PortfolioModal</ModalWrapper>;
 };
 
 export default PortfolioModal;

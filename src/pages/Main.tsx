@@ -13,6 +13,7 @@ import {
   TableTitleBlock,
   Title,
 } from '../components/UI/MainUI';
+import PortfolioModal from '../components/PortfolioModal';
 
 const tableTitleContent = [
   'Rank',
@@ -34,6 +35,9 @@ const Main: React.FC = () => {
   const allCryptos = useAppSelector((state) => state.cryptos.cryptos);
   const error = useAppSelector((state) => state.cryptos.error);
   const loading = useAppSelector((state) => state.cryptos.loading);
+  const modulPortfolioStatus = useAppSelector(
+    (state) => state.cryptos.modalPortfolioStatus,
+  );
 
   const addCryptoClickHandler = (crypto: TCryptoInfo) => {
     setModalStatus(true);
@@ -80,6 +84,7 @@ const Main: React.FC = () => {
           setModalStatus={setModalStatus}
         />
       )}
+      {modulPortfolioStatus && <PortfolioModal />}
     </div>
   );
 };

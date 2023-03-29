@@ -12,11 +12,11 @@ interface ICryptoState {
   cryptos: TCryptoInfo[];
   portfolio: TCryptoPortfolio[];
   portfolioPrice: string;
+  modalPortfolioStatus: boolean;
   topThree: TCryptoInfo[];
   cryptoInfo: TCryptoInfo | null;
   cryptoChart: TCryptoChart[];
   cryptoChartInfo: TCryptoChartInfo;
-  modalStatus: boolean;
   loading: boolean;
   error: string | unknown;
 }
@@ -25,11 +25,11 @@ const initialState: ICryptoState = {
   cryptos: [],
   portfolio: [],
   portfolioPrice: '',
+  modalPortfolioStatus: false,
   topThree: [],
   cryptoChart: [],
   cryptoChartInfo: { high: '', low: '', average: '', change: '' },
   cryptoInfo: null,
-  modalStatus: false,
   loading: false,
   error: null,
 };
@@ -168,6 +168,9 @@ export const cryptoSlice = createSlice({
 
       state.portfolioPrice = calcTotalPrice(state.portfolio);
     },
+    changeModalStatus: (state) => {
+      state.modalPortfolioStatus = !state.modalPortfolioStatus;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -241,6 +244,6 @@ export const cryptoSlice = createSlice({
   },
 });
 
-export const { addPortfolio } = cryptoSlice.actions;
+export const { addPortfolio, changeModalStatus } = cryptoSlice.actions;
 
 export default cryptoSlice.reducer;

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchTopThreeCryptos } from '../redux/cryptoSlice';
+import { fetchTopThreeCryptos, changeModalStatus } from '../redux/cryptoSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
   CryptoBlock,
@@ -51,7 +51,9 @@ const Header: React.FC = () => {
           </CryptoBlock>
         ))}
       </CryptoPopularContainer>
-      <PortfolioIcon className='material-symbols-outlined'>
+      <PortfolioIcon
+        onClick={() => dispatch(changeModalStatus())}
+        className='material-symbols-outlined'>
         {totalPrice ? <PortfolioNum>{totalPrice}</PortfolioNum> : ''}
         business_center
       </PortfolioIcon>

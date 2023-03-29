@@ -12,12 +12,13 @@ import {
   REGISTER,
 } from 'redux-persist';
 
-const persistConfig = {
-  key: 'root',
+const portfolioPersistConfig = {
+  key: 'cryptos',
   storage,
+  whitelist: ['portfolio', 'portfolioPrice'],
 };
 
-const persistedReducer = persistReducer(persistConfig, cryptos);
+const persistedReducer = persistReducer(portfolioPersistConfig, cryptos);
 
 export const store = configureStore({
   reducer: {

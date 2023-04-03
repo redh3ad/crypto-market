@@ -189,6 +189,12 @@ export const cryptoSlice = createSlice({
       }
       state.portfolioPrice = calcTotalPrice(state.portfolio);
     },
+    deleteCrypto: (state, action: PayloadAction<string>) => {
+      state.portfolio = state.portfolio.filter(
+        (obj) => obj.id !== action.payload,
+      );
+      state.portfolioPrice = calcTotalPrice(state.portfolio);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -262,7 +268,12 @@ export const cryptoSlice = createSlice({
   },
 });
 
-export const { addPortfolio, changeModalStatus, minusCrypto, plusCrypto } =
-  cryptoSlice.actions;
+export const {
+  addPortfolio,
+  changeModalStatus,
+  minusCrypto,
+  plusCrypto,
+  deleteCrypto,
+} = cryptoSlice.actions;
 
 export default cryptoSlice.reducer;

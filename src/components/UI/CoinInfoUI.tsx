@@ -195,6 +195,9 @@ export const CryptoImg = styled.img`
     width: 40px;
     height: 40px;
   }
+  @media (max-width: 403px) {
+    margin-bottom: 10px;
+  }
 `;
 
 export const CoinAddButton = styled.button`
@@ -221,6 +224,9 @@ export const CoinAddButton = styled.button`
   @media (max-width: 1000px) {
     padding: 5px 10px;
     font-size: 18px;
+  }
+  @media (max-width: 403px) {
+    margin-bottom: 10px;
   }
 `;
 

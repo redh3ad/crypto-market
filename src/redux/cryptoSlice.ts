@@ -171,6 +171,24 @@ export const cryptoSlice = createSlice({
     changeModalStatus: (state) => {
       state.modalPortfolioStatus = !state.modalPortfolioStatus;
     },
+    minusCrypto: (state, action: PayloadAction<string>) => {
+      const curCrypto = state.portfolio.find(
+        (obj) => obj.id === action.payload,
+      );
+      if (curCrypto) {
+        curCrypto.count--;
+      }
+      state.portfolioPrice = calcTotalPrice(state.portfolio);
+    },
+    plusCrypto: (state, action: PayloadAction<string>) => {
+      const curCrypto = state.portfolio.find(
+        (obj) => obj.id === action.payload,
+      );
+      if (curCrypto) {
+        curCrypto.count++;
+      }
+      state.portfolioPrice = calcTotalPrice(state.portfolio);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -244,6 +262,7 @@ export const cryptoSlice = createSlice({
   },
 });
 
-export const { addPortfolio, changeModalStatus } = cryptoSlice.actions;
+export const { addPortfolio, changeModalStatus, minusCrypto, plusCrypto } =
+  cryptoSlice.actions;
 
 export default cryptoSlice.reducer;

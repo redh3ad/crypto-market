@@ -13,11 +13,15 @@ import {
   PortfolioNum,
   Title,
 } from './UI/HeaderUI';
+import PortfolioModal from './PortfolioModal';
 
 const Header: React.FC = () => {
   const dispatch = useAppDispatch();
   const totalPrice = useAppSelector((state) => state.cryptos.portfolioPrice);
   const topThreeCryptos = useAppSelector((state) => state.cryptos.topThree);
+  const modulPortfolioStatus = useAppSelector(
+    (state) => state.cryptos.modalPortfolioStatus,
+  );
 
   const getAllCryptos = async () => {
     await dispatch(fetchTopThreeCryptos());
@@ -57,6 +61,8 @@ const Header: React.FC = () => {
         {totalPrice ? <PortfolioNum>{totalPrice}</PortfolioNum> : ''}
         business_center
       </PortfolioIcon>
+
+      {modulPortfolioStatus && <PortfolioModal />}
     </div>
   );
 };
